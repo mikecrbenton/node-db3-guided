@@ -1,6 +1,6 @@
 const express = require("express");
-
 const db = require("../data/db-config.js");
+const userModel = require("./user-model")
 
 const router = express.Router();
 
@@ -82,5 +82,15 @@ router.delete("/:id", (req, res) => {
       res.status(500).json({ message: "Failed to delete user" });
     });
 });
+
+// GET LIST OF USERS POSTS
+router.get("/:id/posts", async ( req,res,next) => {
+   try{
+      const posts = await userModel.findPostsByUserId(req.params.id)
+      res.json(posts)// RETURN
+   }catch(err){
+      next(err)
+   }
+})
 
 module.exports = router;
